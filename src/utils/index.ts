@@ -1,4 +1,4 @@
-import db from "../../prisma";
+import db from "./db";
 import { Contact } from "@prisma/client";
 
 interface ContactInfo{
