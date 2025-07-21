@@ -1,14 +1,15 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
 import z from 'zod';
+import { parseContactRequest } from "../controllers";
 
 const router = Router();
 const identifySchema = z.object({
-    email : z.string().optional(),
-    phoneNumber : z.string().optional()
+    email : z.email().nullable(),
+    phoneNumber : z.string().nullable()
 })
 
-router.get('/identify' , (req : Request , res : Response) => {
+router.post('/identify' , async (req : Request , res : Response) => {
     try{
         const parsedSchema = identifySchema.safeParse(req.body);
         if(!parsedSchema.success || (!parsedSchema.data.email && !parsedSchema.data.phoneNumber)){
@@ -16,8 +17,14 @@ router.get('/identify' , (req : Request , res : Response) => {
             return;
         }
 
-        
+        const contacts = await parseContactRequest({ email : parsedSchema.data.email , phoneNumber : parsedSchema.data.phoneNumber });
+        if(contacts === null){
+            res.status(500).json({ error : "Failed to fetch contacts!!" });
+            return;
+        }
 
+        res.json({ contacts });
+        return;
     }catch(err){
         console.log("An error occured in identify endpoint : " , err);
         res.status(500).json({ error : "Internal Server Error!!" });
