@@ -16,7 +16,7 @@ This project implements the `/identify` API endpoint for Bitespeed’s customer 
 
 ## 🚀 Hosted API
 
-**Base URL:** `https://your-deployed-app.onrender.com`
+**Base URL:** `[https://your-deployed-app.onrender.com](https://bitespeed-assignment-7t6r.onrender.com/)`
 
 ### 🔍 Endpoint: `POST /identify`
 
